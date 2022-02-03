@@ -1,25 +1,38 @@
-import static org.junit.Assert.*;
+import org.junit.Test;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.junit.*;
+import static org.junit.Assert.assertEquals;
 
 public class MarkdownParseTest {
     @Test
-    public void addition() {
-        assertEquals(2, 1 + 1);
+    public void test1() throws IOException {
+        Path filename = Path.of("test-file.md");
+        String contents = Files.readString(filename);
+        ArrayList<String> links = MarkdownParse.getLinks(contents);
+        List<String> expected = List.of("https://something.com", "some-page.html");
+        assertEquals(links, expected);
     }
-    public void testMarkdownParse()
-    {
-        String[] markdownNames = {"empty-file.md","empty-link.md","image-file.md","test-file.md" };
-        for(int i =0; i < markdownNames.length; i++){
-            Path fileName = Path.of(markdownNames[i]);
-            String contents = Files.readString(fileName);
-            ArrayList<String> links = getLinks(contents);
 
-            assertEquals(links, markdownNames);
-            assertEquals();
-        }
+    @Test
+    public void test2() throws IOException {
+        Path filename = Path.of("test2.md");
+        String contents = Files.readString(filename);
+        ArrayList<String> links = MarkdownParse.getLinks(contents);
+        List<String> expected = List.of();
+        assertEquals(links, expected);
+    }
+
+    @Test
+    public void test3() throws IOException {
+        Path filename = Path.of("test3.md");
+        String contents = Files.readString(filename);
+        ArrayList<String> links = MarkdownParse.getLinks(contents);
+        List<String> expected = List.of();
+        assertEquals(links, expected);
     }
 }
