@@ -29,7 +29,16 @@ public class MarkdownParseTest {
 
     @Test
     public void test3() throws IOException {
-        Path filename = Path.of("test3.md");
+        Path filename = Path.of("files.md");
+        String contents = Files.readString(filename);
+        ArrayList<String> links = MarkdownParse.getLinks(contents);
+        List<String> expected = List.of();
+        assertEquals(links, expected);
+    }
+
+    @Test
+    public void test4() throws IOException {
+        Path filename = Path.of("files.md");
         String contents = Files.readString(filename);
         ArrayList<String> links = MarkdownParse.getLinks(contents);
         List<String> expected = List.of();

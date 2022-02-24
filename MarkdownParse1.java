@@ -4,7 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
-public class MarkdownParse {
+public class MarkdownParse1 {
     public static ArrayList<String> getLinks(String markdown) {
         ArrayList<String> toReturn = new ArrayList<>();
         // find the next [, then find the ], then find the (, then take up to
@@ -12,23 +12,23 @@ public class MarkdownParse {
         int currentIndex = 0;
         while(currentIndex < markdown.length()) {
             int nextOpenBracket = markdown.indexOf("[", currentIndex);
+            System.out.format("%d\t%d\t%s\n", currentIndex, nextOpenBracket, toReturn);
             int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
-            if(nextOpenBracket == -1 || nextCloseBracket == -1) {
-                break;
-            }
-            if(nextOpenBracket > 0 && markdown.charAt(nextOpenBracket-1) == '!') {
-                currentIndex = nextOpenBracket + 1;
-                continue;
-            }
             int openParen = markdown.indexOf("(", nextCloseBracket);
             int closeParen = markdown.indexOf(")", openParen);
-            if(openParen == -1 || closeParen == -1) {
-                break;
+            if(nextOpenBracket == -1 || nextCloseBracket == -1
+                  || closeParen == -1 || openParen == -1) {
+                    System.out.println("current index here "+currentIndex);
+                    return toReturn;
             }
-            if(openParen-1==nextCloseBracket) {
-                toReturn.add(markdown.substring(openParen + 1, closeParen));
+            String potentialLink = markdown.substring(openParen + 1, closeParen);
+            if(potentialLink.indexOf(" ") == -1 && potentialLink.indexOf("\n") == -1) {
+                toReturn.add(potentialLink);
+                currentIndex = closeParen + 1;
             }
-            currentIndex = closeParen + 1;
+            else {
+                currentIndex = currentIndex + 1;
+            }
         }
         return toReturn;
     }
